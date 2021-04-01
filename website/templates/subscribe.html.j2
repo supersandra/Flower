@@ -1,0 +1,61 @@
+{% extends "base.html.j2" %}
+
+{%- block content -%}
+<section>
+    <div class="container">
+
+        {# Add the user data #}
+        <div class="columns" style="text-align: center;">
+            <div class="column is-3 is-offset-3">
+                <h1 class="title">User Experience</h1>
+                <p id="experience" class="subtitle">{{ "{0:,}".format(user.user_experience) }}</p>
+            </div>
+            <div class="column is-3">
+                <h1 class="title">Pot Count</h1>
+                <p class="subtitle">{{ "{0:,}".format(user.plant_limit) }}</p>
+            </div>
+        </div>
+        <hr />
+
+        {# Add our support schpiel #}
+        <div class="columns" style="text-align: center;">
+            <div class="column is-6 is-offset-3">
+                <p>The most effective way that you can support the development of Flower is by donating! Your money will go to hosting the bot and to adding new flowers into the shop through artist commissions. We would never ask for donations without offering something in return, so right now we're offering 20,000 Flower EXP for every £1.00 you donate. EXP can be used for purchasing flowers, pots, and various items to make your Flower experience more enjoyable! Donations are done exclusively through Paypal and are non-refundable. Thank you in advance!</p>
+            </div>
+        </div>
+        <hr />
+
+        {# Add the checkout stuff #}
+        <div class="columns is-multiline">
+            <div class="column is-4 is-offset-4" style="text-align: center;">
+                <h1 class="title">Buying <b>{{ "{0:,}".format(20_000 * item_quantity) }} exp</b> for <b>£{{ "{0:,.2f}".format(1.00 * item_quantity) }} GBP</b>{% if item_discount %} (with £{{ "{0:,.2f}".format(item_discount) }} discount){% endif %}</h1>
+                {# <h2 class="subtitle">Click below to checkout</h2> #}
+
+                <div id="paypal-button-container-P-9P976889EV8234205MBTFDAI"></div>
+                <script src="https://www.paypal.com/sdk/js?client-id=ATwUKuKlO50YRzDUVK544VlmwYkF1w-d7LppiOTmxuirdeEcALI9u0J_d1ahZxZzjOvetYolRFJR27SQ&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+                <script>
+                  paypal.Buttons({
+                      style: {
+                          shape: 'rect',
+                          color: 'gold',
+                          layout: 'horizontal',
+                          label: 'subscribe'
+                      },
+                      createSubscription: function(data, actions) {
+                        return actions.subscription.create({
+                          /* Creates the subscription */
+                          plan_id: 'P-9P976889EV8234205MBTFDAI'
+                        });
+                      },
+                      onApprove: function(data, actions) {
+                        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                      }
+                  }).render('#paypal-button-container-P-9P976889EV8234205MBTFDAI'); // Renders the PayPal button
+                </script>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+{%- endblock content -%}

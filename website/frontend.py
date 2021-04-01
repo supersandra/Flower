@@ -211,3 +211,20 @@ async def donate_confirm(request:Request):
         'item_quantity': int(request.query.get('quantity', 1)),
         'item_discount': 0,
     }
+
+
+@routes.get("/subscribe")
+@template("subscribe.html.j2")
+@webutils.requires_login()
+@webutils.add_discord_arguments()
+async def subscribe(request:Request):
+    """
+    Support the bot with an actual buy button.
+    """
+
+    session = await aiohttp_session.get_session(request)
+    async with request.app['database']() as db:
+        user_rows = await db("SELECT * FROM user_settings WHERE user_id=ANY($1::BIGINT[]) ORDER BY user_id DESC LIMIT 1", [user_id, 0])
+    return {
+        'user': dict(user_rows[0]),
+    }
