@@ -223,6 +223,7 @@ async def subscribe(request:Request):
     """
 
     session = await aiohttp_session.get_session(request)
+    user_id = session['user_id']
     async with request.app['database']() as db:
         user_rows = await db("SELECT * FROM user_settings WHERE user_id=ANY($1::BIGINT[]) ORDER BY user_id DESC LIMIT 1", [user_id, 0])
     return {
