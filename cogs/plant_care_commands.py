@@ -371,7 +371,7 @@ class PlantCareCommands(utils.Cog):
     @commands.bot_has_permissions(send_messages=True)
     async def waterplant(self, ctx: utils.Context, user: typing.Optional[discord.User], *, plant_name: str):
         """
-        Increase the growth level of your plant.
+        Increases the nourishment level of a plant by 1, to a maximum of 21. As you water a plant, its growth progresses. Plants that are not immortal will die if they are not watered at least every 3 days.
         """
 
         user = user or ctx.author
@@ -467,7 +467,7 @@ class PlantCareCommands(utils.Cog):
     @commands.bot_has_permissions(send_messages=True)
     async def renameplant(self, ctx: utils.Context, before: str = "", *, after: str = ""):
         """
-        Gives a new name to your plant. Use "quotes" if your plant has a space in its name.
+        Gives a new name to a plant that you have purchased. Put your plant's name in "quotes" if the name contains a space. You cannot rename plants that you received from another user. Names must be <= 50 characters in length.
         """
 
         # Suggest a plant to rename if they didn't give one
@@ -579,7 +579,7 @@ class PlantCareCommands(utils.Cog):
     @commands.bot_has_permissions(send_messages=True)
     async def revive(self, ctx: utils.Context, *, plant_name: str):
         """
-        Use one of your revival tokens to be able to revive your plant.
+        Uses one of your revival tokens to revive the plant that you specify.
         """
 
         response, success = await self.revive_plant_backend(ctx.author.id, plant_name)
@@ -589,7 +589,7 @@ class PlantCareCommands(utils.Cog):
     @commands.bot_has_permissions(send_messages=True, add_reactions=True)
     async def immortalize(self, ctx: utils.Context, *, plant_name: str):
         """
-        Makes one of your plants immortal.
+        Makes one of your plants immortal. Plants that are immortal don't die, but you get half as much exp from them.
         """
 
         user_id = ctx.author.id
@@ -623,7 +623,7 @@ class PlantCareCommands(utils.Cog):
             await payload.ack()
             self.bot.loop.create_task(payload.message.edit(components=utils.MessageComponents.boolean_buttons().disable_components()))
         except asyncio.TimeoutError:
-            return await ctx.send(f"Timed out waiting for you to confirm plant immortality, {ctx.author.mention}.")
+            return await ctx.send(f"Timed out waiting for you to confirm plant immortality, {ctx.author.mention}. Cancelled immortalizing your plant.")
 
         # Check their reaction
         if payload.component.custom_id == "NO":
